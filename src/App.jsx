@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 
 // ═══════════════════════════════════════════
 // THEME & STYLES
@@ -101,7 +101,7 @@ function CodeBox({title,children}){
 function Tip({type="tip",children}){
   const cfg={tip:{bg:"#f0faf0",border:"#1d7d34",icon:"💡",color:"#15572a"},warn:{bg:"#fffbeb",border:"#d97706",icon:"⚠️",color:"#92400e"},info:{bg:"#eff6ff",border:"#2563eb",icon:"💬",color:"#1e40af"},key:{bg:"#fef3f2",border:C.accent,icon:"🔑",color:"#7c2d12"}};
   const c=cfg[type]||cfg.tip;
-  return <div style={{padding:"14px 18px",borderRadius:12,background:c.bg,borderLeft:`3px solid ${c.border}`,margin:"16px 0",fontSize:14,lineHeight:1.7,color:c.color}}>{c.icon} {children}</div>;
+  return <div style={{padding:"14px 18px",borderRadius:12,background:c.bg,borderLeft:`3px solid ${c.border}`,margin:"16px 0",fontSize:15,lineHeight:1.7,color:c.color}}>{c.icon} {children}</div>;
 }
 
 function Card({children,onClick,style:s={}}){
@@ -127,7 +127,7 @@ function Quiz({q,opts,ans,exp}){
 
 function Grid({cols=2,gap=12,children}){return <div style={{display:"grid",gridTemplateColumns:`repeat(auto-fit,minmax(${cols===3?240:300}px,1fr))`,gap}}>{children}</div>}
 
-function SectionTitle({children,sub}){return <div style={{marginBottom:24}}><h2 style={{fontSize:28,fontWeight:800,color:C.text,lineHeight:1.2,letterSpacing:"-.02em",margin:0}}>{children}</h2>{sub&&<p style={{fontSize:15,color:C.text2,marginTop:6,lineHeight:1.6}}>{sub}</p>}</div>}
+function SectionTitle({children,sub}){return <div style={{marginBottom:28}}><h2 style={{fontSize:32,fontWeight:800,color:C.text,lineHeight:1.2,letterSpacing:"-.02em",margin:0}}>{children}</h2>{sub&&<p style={{fontSize:17,color:C.text2,marginTop:8,lineHeight:1.6}}>{sub}</p>}</div>}
 
 function Breadcrumb({items,goTo}){
   return <div style={{display:"flex",alignItems:"center",gap:4,fontSize:12,color:C.text3,marginBottom:16,flexWrap:"wrap"}}>{items.map((b,i)=><span key={i}>{i>0&&<span style={{margin:"0 4px"}}>/</span>}{b.link?<a href="#" onClick={e=>{e.preventDefault();goTo(b.link)}} style={{color:C.blue,textDecoration:"none"}}>{b.label}</a>:<span style={{color:C.text2}}>{b.label}</span>}</span>)}</div>;
@@ -139,9 +139,8 @@ function Breadcrumb({items,goTo}){
 
 function HomePage({goTo}){
   return <div style={{maxWidth:800,margin:"0 auto",textAlign:"center",padding:"60px 20px"}}>
-    <div style={{fontSize:12,fontWeight:600,color:C.accent,letterSpacing:1,marginBottom:12}}>CLAUDE CODE 学习平台</div>
-    <h1 style={{fontSize:"clamp(32px,6vw,56px)",fontWeight:900,lineHeight:1.05,letterSpacing:"-.03em",margin:"0 0 16px",color:C.text}}>用自然语言<br/>驾驭代码世界。</h1>
-    <p style={{fontSize:18,color:C.text2,maxWidth:520,margin:"0 auto 40px",lineHeight:1.6,fontWeight:300}}>零基础也能看懂。覆盖官方文档所有核心内容，每个功能都标注「在哪里用」。</p>
+    <h1 style={{fontSize:"clamp(36px,6vw,56px)",fontWeight:900,lineHeight:1.1,letterSpacing:"-.03em",margin:"0 auto 16px",color:C.text,textAlign:"center"}}>用自然语言，驾驭代码世界</h1>
+    <p style={{fontSize:17,color:C.text2,maxWidth:700,margin:"0 auto 40px",lineHeight:1.6,fontWeight:300}}>零基础也能看懂，覆盖官方文档所有核心内容，每个功能都标注「在哪里用」</p>
     <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}>
       <button onClick={()=>goTo("overview")} style={{padding:"12px 28px",borderRadius:980,background:C.text,color:"#fff",border:"none",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:F}}>开始学习</button>
       <button onClick={()=>goTo("where")} style={{padding:"12px 28px",borderRadius:980,background:"transparent",color:C.blue,border:`1px solid ${C.blue}`,fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:F}}>在哪里使用？</button>
@@ -177,7 +176,7 @@ function OverviewPage({goTo}){return <div>
     {icon:"🔀",t:"帮你管Git",d:"提交代码、创建分支、推送——一句话搞定"},
     {icon:"🧪",t:"自己测试验证",d:"写完代码自动跑测试，有Bug自己修"},
     {icon:"🔌",t:"连接外部工具",d:"数据库、浏览器、GitHub等都能连"},
-  ].map((f,i)=><Card key={i}><div style={{fontSize:24,marginBottom:8}}>{f.icon}</div><div style={{fontSize:15,fontWeight:700}}>{f.t}</div><div style={{fontSize:13,color:C.text2,marginTop:4,lineHeight:1.5}}>{f.d}</div></Card>)}</Grid>
+  ].map((f,i)=><Card key={i}><div style={{fontSize:24,marginBottom:8}}>{f.icon}</div><div style={{fontSize:15,fontWeight:700}}>{f.t}</div><div style={{fontSize:14,color:C.text2,marginTop:4,lineHeight:1.6}}>{f.d}</div></Card>)}</Grid>
   <div style={{marginTop:32,padding:20,background:C.bg3,borderRadius:16,fontSize:14,color:C.text2,lineHeight:1.7}}>
     <strong style={{color:C.text}}>接下来：</strong>了解了它是什么，下一步看看 <Link to="where" goTo={goTo}>在哪里打开和使用</Link>，或者直接去 <Link to="install" goTo={goTo}>安装配置</Link>。
   </div>
@@ -244,9 +243,9 @@ claude               # 启动 Claude Code！`}</CodeBox></div>},
 
 function HowWorksPage({goTo}){return <div>
   <SectionTitle sub="理解原理才能用得更顺手">工作原理</SectionTitle>
-  <p style={{fontSize:15,color:C.text,lineHeight:1.8,marginBottom:24}}>当你给Claude Code一个任务，它会进入一个「循环」：接收指令 → 思考 → 用工具执行 → 看结果 → 继续或完成。这个循环在<Link to="where" goTo={goTo}>所有平台</Link>上都一样。</p>
+  <p style={{fontSize:16,color:C.text,lineHeight:1.8,marginBottom:24}}>当你给Claude Code一个任务，它会进入一个「循环」：接收指令 → 思考 → 用工具执行 → 看结果 → 继续或完成。这个循环在<Link to="where" goTo={goTo}>所有平台</Link>上都一样。</p>
   <Card><div style={{display:"flex",flexWrap:"wrap",gap:8,alignItems:"center",justifyContent:"center",padding:"12px 0"}}>
-    {["👂 听你说","🤔 想方案","🔧 用工具干活","📊 看结果","🔄 继续/完成"].map((s,i)=><React.Fragment key={i}>{i>0&&<span style={{color:C.text3}}>→</span>}<div style={{padding:"10px 16px",background:C.bg3,borderRadius:10,fontSize:13,fontWeight:600,textAlign:"center"}}>{s}</div>}</React.Fragment>)}
+    {["👂 听你说","🤔 想方案","🔧 用工具干活","📊 看结果","🔄 继续/完成"].map((s,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:8}}>{i>0&&<span style={{color:C.text3}}>→</span>}<div style={{padding:"10px 16px",background:C.bg3,borderRadius:10,fontSize:14,fontWeight:600,textAlign:"center"}}>{s}</div></div>)}
   </div></Card>
   <h3 style={{fontSize:18,fontWeight:700,margin:"32px 0 12px"}}>它有哪些「工具」？</h3>
   <Grid cols={3}>{[
@@ -256,7 +255,7 @@ function HowWorksPage({goTo}){return <div>
     {t:"🌐 搜网络",d:"查文档、找解决方案"},
     {t:"🔌 连外部",d:"通过MCP连数据库等"},
     {t:"🛡️ 自动备份",d:"每次改动前存档，可以撤回"},
-  ].map((t,i)=><Card key={i}><div style={{fontWeight:700,fontSize:14}}>{t.t}</div><div style={{fontSize:13,color:C.text2,marginTop:4}}>{t.d}</div></Card>)}</Grid>
+  ].map((t,i)=><Card key={i}><div style={{fontWeight:700,fontSize:14}}>{t.t}</div><div style={{fontSize:14,color:C.text2,marginTop:4}}>{t.d}</div></Card>)}</Grid>
   <Tip type="info">想了解安全机制？Claude Code 有 <strong>检查点</strong>（改错了可以撤回，按两次 Esc）和 <strong>权限控制</strong>（危险操作会先问你）。详见 <Link to="commands" goTo={goTo}>命令和快捷键</Link>。</Tip>
 </div>}
 
@@ -299,7 +298,7 @@ function CommandsPage({goTo}){return <div>
 
 function MemoryPage({goTo}){return <div>
   <SectionTitle sub="让Claude记住你的项目信息，每次启动自动读取">记忆系统：CLAUDE.md</SectionTitle>
-  <p style={{fontSize:15,color:C.text,lineHeight:1.8,marginBottom:20}}>CLAUDE.md 就是一个<strong>普通的文本文件</strong>。你在里面写上项目信息，Claude Code 每次启动时会自动读取，就像给新同事一份项目入门手册。</p>
+  <p style={{fontSize:16,color:C.text,lineHeight:1.8,marginBottom:20}}>CLAUDE.md 就是一个<strong>普通的文本文件</strong>。你在里面写上项目信息，Claude Code 每次启动时会自动读取，就像给新同事一份项目入门手册。</p>
   <h3 style={{fontSize:18,fontWeight:700,marginBottom:12}}>放在哪里？怎么创建？</h3>
   {[
     {icon:"📁",path:"你的项目文件夹/CLAUDE.md",effect:"只对这一个项目生效",how:<span>最简单的方式：在 Claude Code 对话中输入 <code style={{fontFamily:M,fontSize:12,background:C.bg3,padding:"1px 4px",borderRadius:3}}>/init</code>，它会自动分析你的项目并生成这个文件。也可以自己手动创建。</span>,explain:<span>比如你的项目在 <code style={{fontFamily:M,fontSize:12}}>/Users/小明/my-website/</code> 文件夹里，就把 CLAUDE.md 放在这个文件夹的根目录下。</span>},
@@ -340,7 +339,7 @@ npm test       # 跑测试
 
 function PromptsPage({goTo}){return <div>
   <SectionTitle sub="不需要懂技术术语，用正常说话的方式就行">怎么跟 Claude Code 说话</SectionTitle>
-  <p style={{fontSize:15,color:C.text,lineHeight:1.8,marginBottom:20}}>你不需要用专业术语。但<strong>说得越具体，效果越好</strong>。下面用真实场景对比，教你怎么说。</p>
+  <p style={{fontSize:16,color:C.text,lineHeight:1.8,marginBottom:20}}>你不需要用专业术语。但<strong>说得越具体，效果越好</strong>。下面用真实场景对比，教你怎么说。</p>
   {[
     {scene:"你想做个新网页",bad:"做个网页",good:"帮我做一个个人介绍网页，要有我的名字、照片、自我介绍、联系方式四个部分，用蓝色和白色为主色调，手机上也能正常看",why:"说清楚要什么内容、什么颜色、什么要求"},
     {scene:"代码报错了",bad:"有个错误",good:"我双击打开网页后，页面一片空白。浏览器控制台显示红字错误 'Uncaught TypeError'。请帮我找到原因并修好",why:"描述你看到了什么、错误信息是什么"},
@@ -381,7 +380,7 @@ function ThinkPage({goTo}){return <div>
   <Breadcrumb items={[{label:"进阶功能"},{label:"Think 深度思考"}]} goTo={goTo}/>
   <SectionTitle sub="让Claude花更多时间思考，回答更准确">Think 深度思考模式</SectionTitle>
   <WhereTag items={["终端","VS Code","桌面App","网页版"]}/>
-  <p style={{fontSize:15,color:C.text,lineHeight:1.8,margin:"16px 0"}}>就像你做数学题，简单的口算就行，难的要拿笔算一样。Claude也有不同的「思考深度」。在你的话里加上关键词就能触发。</p>
+  <p style={{fontSize:16,color:C.text,lineHeight:1.8,margin:"16px 0"}}>就像你做数学题，简单的口算就行，难的要拿笔算一样。Claude也有不同的「思考深度」。在你的话里加上关键词就能触发。</p>
   <Card style={{marginBottom:16}}>
     <h3 style={{fontWeight:700,marginBottom:12}}>四个级别，越难的问题用越高级别</h3>
     {[{kw:"think",lv:"💭 基础思考",when:"一般问题（函数优化、简单Bug）",ex:"请 think，帮我优化这个函数的性能"},
@@ -418,7 +417,7 @@ function PlanPage({goTo}){return <div>
   <Breadcrumb items={[{label:"进阶功能"},{label:"Plan 规划模式"}]} goTo={goTo}/>
   <SectionTitle sub="让Claude先想好再动手，减少返工">Plan 规划模式</SectionTitle>
   <WhereTag items={["终端","VS Code","桌面App"]}/>
-  <p style={{fontSize:15,color:C.text,lineHeight:1.8,margin:"16px 0"}}>默认情况下，Claude收到你的指令就直接开始写代码。但复杂任务最好<strong>先让它想好方案，你确认后再动手</strong>。Anthropic团队说他们 90% 的时间都在用Plan模式。</p>
+  <p style={{fontSize:16,color:C.text,lineHeight:1.8,margin:"16px 0"}}>默认情况下，Claude收到你的指令就直接开始写代码。但复杂任务最好<strong>先让它想好方案，你确认后再动手</strong>。Anthropic团队说他们 90% 的时间都在用Plan模式。</p>
   <Card style={{marginBottom:16}}>
     <h3 style={{fontWeight:700,marginBottom:12}}>怎么进入Plan模式？</h3>
     <div style={{display:"grid",gap:10}}>
@@ -449,7 +448,7 @@ function SubagentsPage({goTo}){return <div>
   <Breadcrumb items={[{label:"进阶功能"},{label:"子代理 SubAgents"}]} goTo={goTo}/>
   <SectionTitle sub="让多个AI同时干活，速度翻倍">子代理 SubAgents</SectionTitle>
   <WhereTag items={["终端","VS Code","桌面App"]}/>
-  <p style={{fontSize:15,color:C.text,lineHeight:1.8,margin:"16px 0"}}>想象你是老板，可以同时派3个员工分别去做不同的事。SubAgents就是这个概念——Claude可以「分身」，多个子代理并行处理不同任务。</p>
+  <p style={{fontSize:16,color:C.text,lineHeight:1.8,margin:"16px 0"}}>想象你是老板，可以同时派3个员工分别去做不同的事。SubAgents就是这个概念——Claude可以「分身」，多个子代理并行处理不同任务。</p>
   <Tip type="key"><strong>为什么用子代理？</strong>子代理在自己独立的「记忆空间」中运行，不会占用你主对话的上下文。这是官方推荐的管理上下文空间的重要方法。详见 <Link to="practice" goTo={goTo}>最佳实践</Link>。</Tip>
   <h3 style={{fontSize:18,fontWeight:700,margin:"20px 0 8px"}}>怎么用？</h3>
   <CodeBox title="基本用法">{`# 最简单：在话后面加 "use subagents"
@@ -490,7 +489,7 @@ function MCPPage({goTo}){return <div>
   <Breadcrumb items={[{label:"进阶功能"},{label:"MCP 扩展连接"}]} goTo={goTo}/>
   <SectionTitle sub="让Claude Code连接外部工具和服务">MCP 扩展连接</SectionTitle>
   <WhereTag items={["终端","VS Code","桌面App"]}/>
-  <p style={{fontSize:15,color:C.text,lineHeight:1.8,margin:"16px 0"}}>MCP全称是「模型上下文协议」，听起来很复杂，其实就是<strong>让Claude Code能用更多工具</strong>。比如让它能操作浏览器、连数据库、读取GitHub信息等。</p>
+  <p style={{fontSize:16,color:C.text,lineHeight:1.8,margin:"16px 0"}}>MCP全称是「模型上下文协议」，听起来很复杂，其实就是<strong>让Claude Code能用更多工具</strong>。比如让它能操作浏览器、连数据库、读取GitHub信息等。</p>
   <Tip type="info">Claude Code 既是MCP的<strong>客户端</strong>（可以连接别的MCP工具），也是MCP的<strong>服务器</strong>（可以被别的程序调用）。作为新手，你主要用到的是客户端功能——连接外部工具。</Tip>
   <h3 style={{fontSize:18,fontWeight:700,margin:"24px 0 12px"}}>常用的MCP工具</h3>
   <Grid cols={3}>{[
@@ -500,7 +499,7 @@ function MCPPage({goTo}){return <div>
     {t:"💾 数据库",d:"直接查询和操作你的数据库，分析数据"},
     {t:"🎨 Figma",d:"读取设计稿，帮你将设计还原为代码"},
     {t:"📓 Notion",d:"读取和更新Notion文档，管理项目知识库"},
-  ].map((m,i)=><Card key={i}><div style={{fontWeight:700,fontSize:14}}>{m.t}</div><div style={{fontSize:13,color:C.text2,marginTop:4,lineHeight:1.5}}>{m.d}</div></Card>)}</Grid>
+  ].map((m,i)=><Card key={i}><div style={{fontWeight:700,fontSize:14}}>{m.t}</div><div style={{fontSize:14,color:C.text2,marginTop:4,lineHeight:1.6}}>{m.d}</div></Card>)}</Grid>
   <h3 style={{fontSize:18,fontWeight:700,margin:"24px 0 12px"}}>怎么添加和管理？</h3>
   <CodeBox title="MCP管理命令（在终端或Claude Code中输入）">{`# 添加GitHub MCP工具（最常用）
 claude mcp add github npx -y @modelcontextprotocol/server-github
@@ -521,7 +520,7 @@ claude --mcp-debug`}</CodeBox>
     {[{t:"项目级配置",d:"只在当前项目中可用。用 claude mcp add 命令添加。",f:"项目/.claude/settings.json"},
       {t:"全局配置",d:"所有项目都可用。用 claude mcp add --global 添加。",f:"~/.claude/settings.json"},
       {t:"团队共享配置",d:"提交到代码仓库，团队每个人都能用。",f:"项目/.mcp.json"},
-    ].map((c,i)=><Card key={i}><div style={{fontWeight:700,fontSize:14}}>{c.t}</div><div style={{fontSize:13,color:C.text2,marginTop:4}}>{c.d}</div><code style={{display:"block",marginTop:6,fontSize:12,fontFamily:M,color:C.text3,background:C.bg3,padding:"4px 8px",borderRadius:4}}>{c.f}</code></Card>)}
+    ].map((c,i)=><Card key={i}><div style={{fontWeight:700,fontSize:14}}>{c.t}</div><div style={{fontSize:14,color:C.text2,marginTop:4}}>{c.d}</div><code style={{display:"block",marginTop:6,fontSize:12,fontFamily:M,color:C.text3,background:C.bg3,padding:"4px 8px",borderRadius:4}}>{c.f}</code></Card>)}
   </div>
   <Tip type="tip"><strong>小贴士：</strong>如果你用GitHub，强烈建议安装 <code style={{fontFamily:M}}>gh</code> 命令行工具（不是MCP，是普通的CLI工具）。Claude可以直接用它创建Issue、开PR、读评论。CLI工具比MCP更省上下文空间。详见 <Link to="practice" goTo={goTo}>最佳实践</Link>。</Tip>
 </div>}
@@ -530,7 +529,7 @@ function SkillsPage({goTo}){return <div>
   <Breadcrumb items={[{label:"进阶功能"},{label:"Skills 技能包"}]} goTo={goTo}/>
   <SectionTitle sub="可重复使用的工作流模板">Skills 技能包</SectionTitle>
   <WhereTag items={["终端","VS Code","桌面App"]}/>
-  <p style={{fontSize:15,color:C.text,lineHeight:1.8,margin:"16px 0"}}>Skills就像是Claude的「技能书」。每个Skill是一套预设好的工作流程。比如有人做了一个「代码审查Skill」，安装后你输入 <code style={{fontFamily:M,background:C.bg3,padding:"1px 4px",borderRadius:3}}>/review</code> 就能一键审查代码。</p>
+  <p style={{fontSize:16,color:C.text,lineHeight:1.8,margin:"16px 0"}}>Skills就像是Claude的「技能书」。每个Skill是一套预设好的工作流程。比如有人做了一个「代码审查Skill」，安装后你输入 <code style={{fontFamily:M,background:C.bg3,padding:"1px 4px",borderRadius:3}}>/review</code> 就能一键审查代码。</p>
   <h3 style={{fontSize:16,fontWeight:700,margin:"20px 0 8px"}}>怎么用？</h3>
   <CodeBox>{`# 查看可用的Skills
 /skills
@@ -545,7 +544,7 @@ function HooksPage({goTo}){return <div>
   <Breadcrumb items={[{label:"进阶功能"},{label:"Hooks 自动化钩子"}]} goTo={goTo}/>
   <SectionTitle sub="特定时机自动执行操作">Hooks 自动化钩子</SectionTitle>
   <WhereTag items={["终端","VS Code","桌面App"]}/>
-  <p style={{fontSize:15,color:C.text,lineHeight:1.8,margin:"16px 0"}}>Hooks就像「自动触发器」。你设定好规则，当某件事发生时自动执行脚本。比如：Claude每次编辑完代码，自动帮你格式化。</p>
+  <p style={{fontSize:16,color:C.text,lineHeight:1.8,margin:"16px 0"}}>Hooks就像「自动触发器」。你设定好规则，当某件事发生时自动执行脚本。比如：Claude每次编辑完代码，自动帮你格式化。</p>
   <Card style={{marginBottom:16}}>
     <h3 style={{fontWeight:700,marginBottom:8}}>和 <Link to="memory" goTo={goTo}>CLAUDE.md</Link> 的区别</h3>
     <Grid><div style={{padding:12,background:C.bg3,borderRadius:8}}><div style={{fontWeight:700,color:C.blue,fontSize:13}}>CLAUDE.md = 建议</div><div style={{fontSize:12,color:C.text2,marginTop:4}}>Claude会<strong>尽量</strong>遵守，但不是100%保证每次都执行</div></div>
@@ -606,7 +605,7 @@ function PracticePage({goTo}){
         {t:"让Claude看结果",d:"让它运行代码并检查输出是否正确",ex:"请运行这个脚本，检查输出是否符合预期"},
         {t:"给预期结果",d:"告诉Claude你期望什么结果",ex:"这个函数应该返回 [1,2,3]，请验证"},
         {t:"用截图验证",d:"让Claude用浏览器看页面效果",ex:"请打开网页检查登录按钮是否正常显示"},
-      ].map((m,i)=><Card key={i}><div style={{fontWeight:700,fontSize:14}}>{m.t}</div><div style={{fontSize:13,color:C.text2,marginTop:4}}>{m.d}</div><div style={{marginTop:6,padding:"6px 10px",background:C.bg3,borderRadius:6,fontSize:12,fontFamily:M,color:C.text3}}>{m.ex}</div></Card>)}</Grid>
+      ].map((m,i)=><Card key={i}><div style={{fontWeight:700,fontSize:14}}>{m.t}</div><div style={{fontSize:14,color:C.text2,marginTop:4}}>{m.d}</div><div style={{marginTop:6,padding:"6px 10px",background:C.bg3,borderRadius:6,fontSize:12,fontFamily:M,color:C.text3}}>{m.ex}</div></Card>)}</Grid>
       <CodeBox title="验证示例">{`# 好的做法：写完代码 + 验证
 "请实现用户注册功能，然后：
 1. 运行 npm test 检查是否通过
@@ -674,7 +673,7 @@ function PracticePage({goTo}){
       ].map((p,i)=><Card key={i} onClick={p.to?()=>goTo(p.to):undefined} style={{cursor:p.to?"pointer":"default"}}>
         <div style={{fontSize:20,marginBottom:6}}>{p.icon}</div>
         <div style={{fontWeight:700,fontSize:14}}>{p.t}</div>
-        <div style={{fontSize:13,color:C.text2,marginTop:4}}>{p.d}</div>
+        <div style={{fontSize:14,color:C.text2,marginTop:4}}>{p.d}</div>
         {p.to&&<div style={{fontSize:12,color:C.blue,marginTop:6}}>了解详情 ›</div>}
       </Card>)}</Grid>
     </div>},
@@ -708,7 +707,7 @@ function PracticePage({goTo}){
   ];
   return <div>
     <SectionTitle sub="来自Anthropic团队和Claude Code创始人Boris Cherny的实战经验">官方最佳实践</SectionTitle>
-    <p style={{fontSize:15,color:C.text,lineHeight:1.8,marginBottom:8}}>几乎所有最佳实践都围绕一个核心约束：<strong>Claude的上下文窗口（记忆空间）会填满，填满后性能下降。</strong>理解这一点，你就理解了为什么要这样做。</p>
+    <p style={{fontSize:16,color:C.text,lineHeight:1.8,marginBottom:8}}>几乎所有最佳实践都围绕一个核心约束：<strong>Claude的上下文窗口（记忆空间）会填满，填满后性能下降。</strong>理解这一点，你就理解了为什么要这样做。</p>
     <div style={{marginBottom:24,padding:16,background:C.bg3,borderRadius:12,fontSize:13,color:C.text2}}>本页内容基于 <a href="https://code.claude.com/docs/zh-CN/best-practices" target="_blank" style={{color:C.blue,textDecoration:"none"}}>Claude Code 官方最佳实践文档</a>，用通俗语言重新整理。点击各小节展开详细内容。</div>
     {sections.map((s,i)=><div key={i} style={{borderBottom:`1px solid ${C.borderLight}`}}>
       <button onClick={()=>setOpenSec(openSec===i?-1:i)} style={{width:"100%",padding:"16px 0",display:"flex",justifyContent:"space-between",alignItems:"center",background:"none",border:"none",color:C.text,fontSize:16,fontWeight:700,cursor:"pointer",fontFamily:F,textAlign:"left",lineHeight:1.4}}>
@@ -761,31 +760,34 @@ export default function App(){
   const pg=SITEMAP[page];
   const PageComp=PAGES[page];
 
-  return <div style={{fontFamily:F,color:C.text,background:C.bg,height:"100vh",display:"flex",flexDirection:"column",WebkitFontSmoothing:"antialiased"}}>
+  return <div style={{fontFamily:F,color:C.text,background:C.bg,height:"100vh",display:"flex",flexDirection:"column",WebkitFontSmoothing:"antialiased",fontSize:16}}>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
 
-    {/* ══ TOP NAV BAR (Apple style) ══ */}
-    <nav style={{background:"rgba(251,251,253,.92)",backdropFilter:"saturate(180%) blur(20px)",WebkitBackdropFilter:"saturate(180%) blur(20px)",borderBottom:`1px solid ${C.borderLight}`,position:"sticky",top:0,zIndex:100}}>
-      <div style={{maxWidth:1024,margin:"0 auto",padding:"0 20px",height:44,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <a href="#" onClick={e=>{e.preventDefault();goTo("home")}} style={{fontSize:14,fontWeight:700,color:C.text,textDecoration:"none",display:"flex",alignItems:"center",gap:6}}>⚡ Claude Code 指南</a>
+    {/* ══ TOP NAV BAR ══ */}
+    <nav style={{background:"rgba(251,251,253,.95)",backdropFilter:"saturate(180%) blur(20px)",WebkitBackdropFilter:"saturate(180%) blur(20px)",borderBottom:`1px solid ${C.borderLight}`,position:"sticky",top:0,zIndex:100}}>
+      <div style={{maxWidth:860,margin:"0 auto",padding:"0 32px",height:48,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+        <a href="#" onClick={e=>{e.preventDefault();goTo("home")}} style={{fontSize:16,fontWeight:800,color:C.text,textDecoration:"none",display:"flex",alignItems:"center",gap:8,letterSpacing:"-.01em"}}>
+          <span style={{fontSize:20}}>⚡</span>
+          <span>Claude Code <span style={{fontWeight:400,color:C.text2}}>完全指南</span></span>
+        </a>
         {/* Desktop nav */}
-        <div style={{display:"flex",gap:0,position:"relative"}}>
+        <div style={{display:"flex",gap:2,position:"relative",alignItems:"center"}}>
           {TOP_GROUPS.map(g=>{
             const items=Object.entries(SITEMAP).filter(([k,v])=>v.group===g);
             const isActive=items.some(([k])=>k===page);
             const isSingle=items.length===1;
             const isOpen=dropdown===g&&!isSingle;
             return <div key={g} style={{position:"relative"}} onMouseEnter={()=>{if(!isSingle)setDropdown(g)}} onMouseLeave={()=>setDropdown(null)}>
-              <button onClick={()=>{if(isSingle)goTo(items[0][0])}} style={{padding:"6px 12px",fontSize:12,fontWeight:isActive?600:400,color:isActive?C.text:C.text2,background:"none",border:"none",cursor:"pointer",fontFamily:F}}>{g}</button>
-              {isOpen&&<div style={{position:"absolute",top:"100%",left:"50%",transform:"translateX(-50%)",background:"#fff",borderRadius:12,boxShadow:"0 4px 24px rgba(0,0,0,.12)",border:`1px solid ${C.borderLight}`,padding:6,minWidth:200,zIndex:200}}>
-                {items.map(([k,v])=><a key={k} href="#" onClick={e=>{e.preventDefault();goTo(k)}} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 12px",borderRadius:8,textDecoration:"none",color:k===page?C.accent:C.text,background:k===page?`${C.accent}08`:"transparent",fontSize:13,fontWeight:k===page?600:400,transition:".15s"}}>
-                  <span>{v.icon}</span>{v.title}
+              <button onClick={()=>{if(isSingle)goTo(items[0][0])}} style={{padding:"8px 14px",fontSize:14,fontWeight:isActive?600:400,color:isActive?C.text:C.text2,background:isActive?"rgba(0,0,0,.04)":"none",border:"none",cursor:"pointer",fontFamily:F,borderRadius:8,transition:".15s"}}>{g}</button>
+              {isOpen&&<div style={{position:"absolute",top:"calc(100% + 4px)",left:"50%",transform:"translateX(-50%)",background:"#fff",borderRadius:14,boxShadow:"0 8px 32px rgba(0,0,0,.12)",border:`1px solid ${C.borderLight}`,padding:8,minWidth:220,zIndex:200}}>
+                {items.map(([k,v])=><a key={k} href="#" onClick={e=>{e.preventDefault();goTo(k)}} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",borderRadius:10,textDecoration:"none",color:k===page?C.accent:C.text,background:k===page?`${C.accent}08`:"transparent",fontSize:14,fontWeight:k===page?600:400,transition:".15s"}}>
+                  <span style={{fontSize:18}}>{v.icon}</span><span>{v.title}</span>
                 </a>)}
               </div>}
             </div>;
           })}
         </div>
-        <button onClick={()=>setMenuOpen(!menuOpen)} style={{display:"none",background:"none",border:"none",fontSize:18,cursor:"pointer",color:C.text,padding:4}} className="mob-btn">☰</button>
+        <button onClick={()=>setMenuOpen(!menuOpen)} style={{display:"none",background:"none",border:"none",fontSize:20,cursor:"pointer",color:C.text,padding:4}} className="mob-btn">☰</button>
       </div>
     </nav>
 
@@ -800,13 +802,13 @@ export default function App(){
 
     {/* ══ CONTENT ══ */}
     <div ref={contentRef} style={{flex:1,overflow:"auto"}} onScroll={e=>{setShowTop(e.target.scrollTop>400)}}>
-      <div style={{maxWidth:760,margin:"0 auto",padding:page==="home"?"0":"32px 20px 80px"}}>
-        {page!=="home"&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20,paddingBottom:12,borderBottom:`1px solid ${C.borderLight}`}}>
+      <div style={{maxWidth:860,margin:"0 auto",padding:page==="home"?"0":"40px 32px 80px"}}>
+        {page!=="home"&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:24,paddingBottom:14,borderBottom:`1px solid ${C.borderLight}`}}>
           <div style={{display:"flex",gap:8,alignItems:"center"}}>
-            {history.length>0&&<button onClick={goBack} style={{fontSize:12,color:C.blue,background:"none",border:`1px solid ${C.blue}33`,borderRadius:6,padding:"4px 10px",cursor:"pointer",fontFamily:F,display:"flex",alignItems:"center",gap:3}}>← 返回</button>}
-            {prev?<button onClick={()=>goTo(prev)} style={{fontSize:12,color:C.text3,background:"none",border:"none",cursor:"pointer",fontFamily:F}}>‹ {SITEMAP[prev]?.nav||"上一页"}</button>:<div/>}
+            {history.length>0&&<button onClick={goBack} style={{fontSize:13,color:C.blue,background:"none",border:`1px solid ${C.blue}33`,borderRadius:8,padding:"6px 14px",cursor:"pointer",fontFamily:F,display:"flex",alignItems:"center",gap:3}}>← 返回</button>}
+            {prev?<button onClick={()=>goTo(prev)} style={{fontSize:13,color:C.text3,background:"none",border:"none",cursor:"pointer",fontFamily:F}}>‹ {SITEMAP[prev]?.nav||"上一页"}</button>:<div/>}
           </div>
-          {next&&<button onClick={()=>goTo(next)} style={{fontSize:12,color:"#fff",background:C.text,border:"none",borderRadius:980,padding:"6px 16px",cursor:"pointer",fontFamily:F,fontWeight:600}}>{SITEMAP[next]?.nav||"下一页"} →</button>}
+          {next&&<button onClick={()=>goTo(next)} style={{fontSize:13,color:"#fff",background:C.text,border:"none",borderRadius:980,padding:"8px 20px",cursor:"pointer",fontFamily:F,fontWeight:600}}>{SITEMAP[next]?.nav||"下一页"} →</button>}
         </div>}
         <PageComp goTo={goTo}/>
         {page!=="home"&&next&&<div style={{marginTop:48,padding:24,background:C.bg3,borderRadius:16,textAlign:"center"}}>
@@ -822,6 +824,9 @@ export default function App(){
 
     <style>{`
       @media(max-width:768px){.mob-btn{display:block!important} nav > div > div:nth-child(2){display:none!important}}
+      @media(min-width:1024px){
+        .content-area p,.content-area li,.content-area td,.content-area span:not(code){font-size:inherit}
+      }
       ::selection{background:${C.accent};color:#fff}
       ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
     `}</style>
