@@ -1,0 +1,482 @@
+{
+  "updatedAt": "2026-06-22T13:35:53.271Z",
+  "upstreamRepo": "https://github.com/stormzhang/ai-coding-guide",
+  "upstreamCommit": "9c74130bafbcd0be8622c2ced170480c34b9e89c",
+  "sections": [
+    {
+      "category": "claude-code",
+      "file": "claude-code/01-what-is-claude-code.md",
+      "title": "01 what is claude code"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/02-install.md",
+      "title": "02 install"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/03-how-it-works.md",
+      "title": "03 how it works"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/04-api-config.md",
+      "title": "04 api config"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/05-third-party-models.md",
+      "title": "05 third party models"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/06-coding-plan.md",
+      "title": "06 coding plan"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/07-first-run.md",
+      "title": "07 first run"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/08-vscode.md",
+      "title": "08 vscode"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/09-jetbrains.md",
+      "title": "09 jetbrains"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/10-desktop.md",
+      "title": "10 desktop"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/11-web-and-cloud.md",
+      "title": "11 web and cloud"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/12-project-init.md",
+      "title": "12 project init"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/13-project-structure.md",
+      "title": "13 project structure"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/14-interface-and-shortcuts.md",
+      "title": "14 interface and shortcuts"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/15-prompting.md",
+      "title": "15 prompting"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/16-common-workflows.md",
+      "title": "16 common workflows"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/17-images-multimodal.md",
+      "title": "17 images multimodal"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/18-claude-md-guide.md",
+      "title": "18 claude md guide"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/19-context-management.md",
+      "title": "19 context management"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/20-permissions.md",
+      "title": "20 permissions"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/21-security.md",
+      "title": "21 security"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/22-mcp.md",
+      "title": "22 mcp"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/23-subagents.md",
+      "title": "23 subagents"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/24-plugins.md",
+      "title": "24 plugins"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/25-memory.md",
+      "title": "25 memory"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/26-agent-skills.md",
+      "title": "26 agent skills"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/27-skills-in-practice.md",
+      "title": "27 skills in practice"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/28-skill-creator.md",
+      "title": "28 skill creator"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/29-agent-teams.md",
+      "title": "29 agent teams"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/30-choosing-features.md",
+      "title": "30 choosing features"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/31-settings-json.md",
+      "title": "31 settings json"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/32-output-styles.md",
+      "title": "32 output styles"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/33-hooks.md",
+      "title": "33 hooks"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/34-cli-reference.md",
+      "title": "34 cli reference"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/35-modes-and-control.md",
+      "title": "35 modes and control"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/36-slash-commands.md",
+      "title": "36 slash commands"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/37-checkpoints.md",
+      "title": "37 checkpoints"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/38-plugins-reference.md",
+      "title": "38 plugins reference"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/39-getting-started-practice.md",
+      "title": "39 getting started practice"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/40-chrome.md",
+      "title": "40 chrome"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/41-parallel-tasks.md",
+      "title": "41 parallel tasks"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/42-env-vars.md",
+      "title": "42 env vars"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/43-git-workflow.md",
+      "title": "43 git workflow"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/44-github-actions.md",
+      "title": "44 github actions"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/45-agent-sdk.md",
+      "title": "45 agent sdk"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/46-dev-config.md",
+      "title": "46 dev config"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/47-voice.md",
+      "title": "47 voice"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/48-capstone-project.md",
+      "title": "48 capstone project"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/49-best-practices.md",
+      "title": "49 best practices"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/50-anti-patterns.md",
+      "title": "50 anti patterns"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/51-troubleshooting.md",
+      "title": "51 troubleshooting"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/52-glossary.md",
+      "title": "52 glossary"
+    },
+    {
+      "category": "claude-code",
+      "file": "claude-code/53-remotion-video.md",
+      "title": "53 remotion video"
+    },
+    {
+      "category": "codex",
+      "file": "codex/01-what-is-codex.md",
+      "title": "01 what is codex"
+    },
+    {
+      "category": "codex",
+      "file": "codex/02-core-concepts.md",
+      "title": "02 core concepts"
+    },
+    {
+      "category": "codex",
+      "file": "codex/03-install.md",
+      "title": "03 install"
+    },
+    {
+      "category": "codex",
+      "file": "codex/04-pricing.md",
+      "title": "04 pricing"
+    },
+    {
+      "category": "codex",
+      "file": "codex/05-third-party-models.md",
+      "title": "05 third party models"
+    },
+    {
+      "category": "codex",
+      "file": "codex/06-first-task.md",
+      "title": "06 first task"
+    },
+    {
+      "category": "codex",
+      "file": "codex/07-desktop-app.md",
+      "title": "07 desktop app"
+    },
+    {
+      "category": "codex",
+      "file": "codex/08-cli.md",
+      "title": "08 cli"
+    },
+    {
+      "category": "codex",
+      "file": "codex/09-ide.md",
+      "title": "09 ide"
+    },
+    {
+      "category": "codex",
+      "file": "codex/10-cloud.md",
+      "title": "10 cloud"
+    },
+    {
+      "category": "codex",
+      "file": "codex/11-agents-md.md",
+      "title": "11 agents md"
+    },
+    {
+      "category": "codex",
+      "file": "codex/12-slash-commands.md",
+      "title": "12 slash commands"
+    },
+    {
+      "category": "codex",
+      "file": "codex/13-prompting.md",
+      "title": "13 prompting"
+    },
+    {
+      "category": "codex",
+      "file": "codex/14-workflows.md",
+      "title": "14 workflows"
+    },
+    {
+      "category": "codex",
+      "file": "codex/15-permissions.md",
+      "title": "15 permissions"
+    },
+    {
+      "category": "codex",
+      "file": "codex/16-security.md",
+      "title": "16 security"
+    },
+    {
+      "category": "codex",
+      "file": "codex/17-computer-use.md",
+      "title": "17 computer use"
+    },
+    {
+      "category": "codex",
+      "file": "codex/18-config.md",
+      "title": "18 config"
+    },
+    {
+      "category": "codex",
+      "file": "codex/19-memory.md",
+      "title": "19 memory"
+    },
+    {
+      "category": "codex",
+      "file": "codex/20-mcp.md",
+      "title": "20 mcp"
+    },
+    {
+      "category": "codex",
+      "file": "codex/21-subagents.md",
+      "title": "21 subagents"
+    },
+    {
+      "category": "codex",
+      "file": "codex/22-skills.md",
+      "title": "22 skills"
+    },
+    {
+      "category": "codex",
+      "file": "codex/23-plugins.md",
+      "title": "23 plugins"
+    },
+    {
+      "category": "codex",
+      "file": "codex/24-hooks.md",
+      "title": "24 hooks"
+    },
+    {
+      "category": "codex",
+      "file": "codex/25-worktrees.md",
+      "title": "25 worktrees"
+    },
+    {
+      "category": "codex",
+      "file": "codex/26-git-github.md",
+      "title": "26 git github"
+    },
+    {
+      "category": "codex",
+      "file": "codex/27-automation.md",
+      "title": "27 automation"
+    },
+    {
+      "category": "codex",
+      "file": "codex/28-noninteractive.md",
+      "title": "28 noninteractive"
+    },
+    {
+      "category": "codex",
+      "file": "codex/29-integrations.md",
+      "title": "29 integrations"
+    },
+    {
+      "category": "codex",
+      "file": "codex/30-models.md",
+      "title": "30 models"
+    },
+    {
+      "category": "codex",
+      "file": "codex/31-speed.md",
+      "title": "31 speed"
+    },
+    {
+      "category": "codex",
+      "file": "codex/32-migrate-from-claude-code.md",
+      "title": "32 migrate from claude code"
+    },
+    {
+      "category": "codex",
+      "file": "codex/33-windows.md",
+      "title": "33 windows"
+    },
+    {
+      "category": "codex",
+      "file": "codex/34-capstone.md",
+      "title": "34 capstone"
+    },
+    {
+      "category": "codex",
+      "file": "codex/35-cheatsheet.md",
+      "title": "35 cheatsheet"
+    },
+    {
+      "category": "codex",
+      "file": "codex/36-best-practices.md",
+      "title": "36 best practices"
+    },
+    {
+      "category": "codex",
+      "file": "codex/37-faq.md",
+      "title": "37 faq"
+    },
+    {
+      "category": "codex",
+      "file": "codex/38-glossary.md",
+      "title": "38 glossary"
+    },
+    {
+      "category": "codex",
+      "file": "codex/39-enterprise.md",
+      "title": "39 enterprise"
+    },
+    {
+      "category": "codex",
+      "file": "codex/README.md",
+      "title": "README"
+    },
+    {
+      "category": "root",
+      "file": "README.en.md",
+      "title": "README.en"
+    },
+    {
+      "category": "root",
+      "file": "README.md",
+      "title": "README"
+    }
+  ]
+}

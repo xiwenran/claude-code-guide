@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
+import upstreamManifest from "../content/upstream/manifest.json";
 
 // ═══════════════════════════════════════════
 // THEME & STYLES
@@ -44,6 +45,9 @@ const SITEMAP = {
 };
 const PAGE_ORDER=["home","overview","where","install","howworks","commands","memory","prompts","workflows","think","plan","subagents","mcp","skills","hooks","practice","platforms","exercises"];
 const TOP_GROUPS=["快速开始","核心概念","日常使用","进阶功能","最佳实践","更多"];
+const UPSTREAM_SECTIONS=upstreamManifest.sections||[];
+const CLAUDE_SECTION_COUNT=UPSTREAM_SECTIONS.filter((item)=>item.category==="claude-code").length;
+const CODEX_SECTION_COUNT=UPSTREAM_SECTIONS.filter((item)=>item.category==="codex").length;
 
 // ═══════════════════════════════════════════
 // SHARED COMPONENTS
@@ -138,24 +142,57 @@ function Breadcrumb({items,goTo}){
 // ═══════════════════════════════════════════
 
 function HomePage({goTo}){
-  return <div style={{maxWidth:800,margin:"0 auto",textAlign:"center",padding:"60px 20px"}}>
-    <h1 style={{fontSize:"clamp(36px,6vw,56px)",fontWeight:900,lineHeight:1.1,letterSpacing:"-.03em",margin:"0 auto 16px",color:C.text,textAlign:"center"}}>用自然语言，驾驭代码世界</h1>
-    <p style={{fontSize:17,color:C.text2,maxWidth:700,margin:"0 auto 40px",lineHeight:1.6,fontWeight:300}}>零基础也能看懂，覆盖官方文档所有核心内容，每个功能都标注「在哪里用」</p>
-    <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}>
-      <button onClick={()=>goTo("overview")} style={{padding:"12px 28px",borderRadius:980,background:C.text,color:"#fff",border:"none",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:F}}>开始学习</button>
-      <button onClick={()=>goTo("where")} style={{padding:"12px 28px",borderRadius:980,background:"transparent",color:C.blue,border:`1px solid ${C.blue}`,fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:F}}>在哪里使用？</button>
+  const updatedAt=upstreamManifest.updatedAt?new Date(upstreamManifest.updatedAt).toLocaleString("zh-CN",{hour12:false}):"待同步";
+  const shortCommit=upstreamManifest.upstreamCommit?upstreamManifest.upstreamCommit.slice(0,7):"待同步";
+  const repoLabel=(upstreamManifest.upstreamRepo||"https://github.com/stormzhang/ai-coding-guide").replace("https://github.com/","");
+
+  return <div style={{maxWidth:960,margin:"0 auto",padding:"48px 20px 72px"}}>
+    <div style={{textAlign:"center",marginBottom:40}}>
+      <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"6px 12px",borderRadius:999,background:"#fff4ec",color:C.accent,fontSize:12,fontWeight:700,marginBottom:16}}>
+        <span>自动同步上游内容</span>
+        <span style={{color:C.text3,fontWeight:600}}>MIT 来源保留</span>
+      </div>
+      <h1 style={{fontSize:"clamp(38px,6vw,60px)",fontWeight:900,lineHeight:1.05,letterSpacing:0,margin:"0 auto 16px",color:C.text,textAlign:"center"}}>Claude Code & Codex 完全指南</h1>
+      <p style={{fontSize:18,color:C.text2,maxWidth:760,margin:"0 auto 28px",lineHeight:1.65}}>首页保留 Claude Code 学习路径，同时新增 Codex 入口说明。核心资料来自上游仓库自动同步，站点负责帮你快速找到入口和上下文。</p>
+      <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}>
+        <button onClick={()=>goTo("overview")} style={{padding:"12px 28px",borderRadius:980,background:C.text,color:"#fff",border:"none",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:F}}>先看 Claude Code</button>
+        <button onClick={()=>goTo("where")} style={{padding:"12px 28px",borderRadius:980,background:"transparent",color:C.blue,border:`1px solid ${C.blue}`,fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:F}}>查看入口说明</button>
+      </div>
     </div>
-    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",gap:12,marginTop:64,textAlign:"left"}}>
+
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:16,marginBottom:18}}>
+      {[
+        {icon:"⚡",title:"Claude Code 入口",count:CLAUDE_SECTION_COUNT,desc:"延续现有学习站内容，入口、安装、命令与工作流都以 Claude Code 为主线。",action:"继续学习",to:"overview"},
+        {icon:"🧭",title:"Codex 入口",count:CODEX_SECTION_COUNT,desc:"首页补充 Codex 资料入口位，明确说明内容同样来自上游自动同步，方便后续继续扩展。",action:"查看入口说明",to:"where"},
+      ].map((card)=><Card key={card.title} style={{padding:26}}>
+        <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:12,marginBottom:14}}>
+          <div>
+            <div style={{fontSize:28,marginBottom:10}}>{card.icon}</div>
+            <div style={{fontSize:20,fontWeight:800,color:C.text,lineHeight:1.2}}>{card.title}</div>
+          </div>
+          <div style={{minWidth:74,padding:"8px 10px",borderRadius:12,background:C.bg3,textAlign:"center"}}>
+            <div style={{fontSize:22,fontWeight:800,color:C.text}}>{card.count}</div>
+            <div style={{fontSize:11,color:C.text3}}>同步文章</div>
+          </div>
+        </div>
+        <div style={{fontSize:14,color:C.text2,lineHeight:1.7,marginBottom:16}}>{card.desc}</div>
+        <div style={{fontSize:12,color:C.text3,lineHeight:1.6,marginBottom:16}}>内容来源：上游仓库自动同步，不在首页手工维护文章正文。</div>
+        <button onClick={()=>goTo(card.to)} style={{padding:"10px 16px",borderRadius:12,background:"transparent",border:`1px solid ${C.border}`,color:C.text,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:F}}>{card.action}</button>
+      </Card>)}
+    </div>
+
+    <div style={{padding:18,borderRadius:16,background:C.bg3,marginBottom:40,fontSize:14,color:C.text2,lineHeight:1.7}}>
+      上游仓库：<a href={upstreamManifest.upstreamRepo} target="_blank" rel="noreferrer" style={{color:C.blue,textDecoration:"none"}}>{repoLabel}</a> · 最新同步 commit：<code style={{fontFamily:M,background:"#fff",padding:"2px 6px",borderRadius:6}}>{shortCommit}</code> · 同步时间：{updatedAt}
+    </div>
+
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",gap:12,textAlign:"left"}}>
       {[
         {icon:"📖",title:"认识 Claude Code",desc:"了解它能做什么",to:"overview"},
         {icon:"🖥️",title:"在哪里打开",desc:"5种方式逐个详解",to:"where"},
         {icon:"📦",title:"安装配置",desc:"三步安装指南",to:"install"},
         {icon:"⌨️",title:"命令在哪里用",desc:"彻底搞清楚",to:"commands"},
-        {icon:"🧠",title:"记忆系统",desc:"CLAUDE.md怎么用",to:"memory"},
+        {icon:"🧠",title:"记忆系统",desc:"CLAUDE.md 怎么用",to:"memory"},
         {icon:"💬",title:"怎么跟它说话",desc:"普通人也会的提示词",to:"prompts"},
-        {icon:"🔄",title:"工作流程",desc:"5个万能模式",to:"workflows"},
-        {icon:"🎯",title:"进阶技巧",desc:"Think/Plan/MCP等",to:"think"},
-        {icon:"🛠️",title:"动手练习",desc:"4级难度项目",to:"exercises"},
       ].map((c,i)=><Card key={i} onClick={()=>goTo(c.to)}>
         <div style={{fontSize:24,marginBottom:8}}>{c.icon}</div>
         <div style={{fontSize:15,fontWeight:700,color:C.text}}>{c.title}</div>
@@ -768,7 +805,7 @@ export default function App(){
       <div style={{maxWidth:860,margin:"0 auto",padding:"0 32px",height:48,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <a href="#" onClick={e=>{e.preventDefault();goTo("home")}} style={{fontSize:16,fontWeight:800,color:C.text,textDecoration:"none",display:"flex",alignItems:"center",gap:8,letterSpacing:"-.01em"}}>
           <span style={{fontSize:20}}>⚡</span>
-          <span>Claude Code <span style={{fontWeight:400,color:C.text2}}>完全指南</span></span>
+          <span>Claude Code & Codex <span style={{fontWeight:400,color:C.text2}}>完全指南</span></span>
         </a>
         {/* Desktop nav */}
         <div style={{display:"flex",gap:2,position:"relative",alignItems:"center"}}>
@@ -818,7 +855,7 @@ export default function App(){
       </div>
       {/* Footer */}
       <div style={{marginTop:48,padding:"24px 20px",borderTop:`1px solid ${C.borderLight}`,textAlign:"center",fontSize:12,color:C.text3}}>
-        Claude Code 完全指南 · 基于<a href="https://code.claude.com/docs/zh-CN/overview" target="_blank" style={{color:C.blue,textDecoration:"none"}}> 官方文档 </a>通俗改编 · 2026年3月更新
+        Claude Code & Codex 完全指南 · 上游来源 <a href="https://github.com/stormzhang/ai-coding-guide" target="_blank" rel="noreferrer" style={{color:C.blue,textDecoration:"none"}}>stormzhang/ai-coding-guide</a> · MIT 许可同步
       </div>
     </div>
 
