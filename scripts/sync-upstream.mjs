@@ -1,4 +1,4 @@
-import { mkdtemp, rm, mkdir, cp, readdir, writeFile } from "node:fs/promises";
+import { mkdtemp, rm, mkdir, cp, readdir, readFile, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -8,6 +8,7 @@ const upstreamRepo = "https://github.com/stormzhang/ai-coding-guide";
 const tempRoot = await mkdtemp(path.join(os.tmpdir(), "claude-code-guide-upstream-"));
 const cloneDir = path.join(tempRoot, "repo");
 const outputDir = path.resolve("content/upstream");
+const manifestPath = path.join(outputDir, "manifest.json");
 const targets = [
   "README.md",
   "README.en.md",
@@ -58,6 +59,9 @@ async function collectMarkdownFiles(dir, prefix = "") {
 try {
   console.log(`Cloning ${upstreamRepo} ...`);
   runGit(["clone", "--depth", "1", upstreamRepo, cloneDir]);
+  const previousManifest = existsSync(manifestPath)
+    ? JSON.parse(await readFile(manifestPath, "utf-8"))
+    : null;
 
   await rm(outputDir, { recursive: true, force: true });
   await mkdir(outputDir, { recursive: true });
@@ -73,14 +77,16 @@ try {
   const upstreamCommit = runGit(["rev-parse", "HEAD"], cloneDir);
   const sections = await collectMarkdownFiles(outputDir);
   const manifest = {
-    updatedAt: new Date().toISOString(),
+    updatedAt: previousManifest?.upstreamCommit === upstreamCommit
+      ? previousManifest.updatedAt
+      : new Date().toISOString(),
     upstreamRepo,
     upstreamCommit,
     sections,
   };
 
   await writeFile(
-    path.join(outputDir, "manifest.json"),
+    manifestPath,
     `${JSON.stringify(manifest, null, 2)}\n`,
     "utf-8",
   );
