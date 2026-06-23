@@ -52,9 +52,9 @@ const CODEX_SECTION_COUNT=UPSTREAM_SECTIONS.filter((item)=>item.category==="code
 const ARTICLE_MODULES=import.meta.glob("../content/upstream/**/*.md",{query:"?raw",import:"default",eager:true});
 const ASSET_MODULES=import.meta.glob("../content/upstream/**/*.{png,jpg,jpeg,gif,webp,svg}",{import:"default",eager:true});
 const GUIDE_PAGES={
-  claudeGuide:{title:"Claude Code 文章",nav:"Claude Code 文章"},
-  codexGuide:{title:"Codex 文章",nav:"Codex 文章"},
-  articleView:{title:"文章阅读",nav:"文章阅读"},
+  claudeGuide:{title:"Claude Code 学习路径",nav:"Claude Code"},
+  codexGuide:{title:"Codex 学习路径",nav:"Codex"},
+  articleView:{title:"文章正文",nav:"文章正文"},
 };
 const CLAUDE_GUIDE_GROUPS=[
   {key:"quick-start",title:"快速开始",matchers:[1,2,3,7,39]},
@@ -62,71 +62,36 @@ const CLAUDE_GUIDE_GROUPS=[
   {key:"core-concepts",title:"核心概念",matchers:[12,13,18,19,20,25]},
   {key:"advanced",title:"进阶功能",matchers:[22,23,24,26,27,28,29,33,35,36,37,38,41,45,46,53]},
   {key:"best-practices",title:"最佳实践",matchers:[6,15,16,30,32,43,48,49,50]},
-  {key:"reference",title:"参考与排障",matchers:[4,5,21,31,34,42,44,51,52]},
+  {key:"reference",title:"参考资料",matchers:[4,5,21,31,34,42,44,51,52]},
 ];
 const CODEX_GUIDE_GROUPS=[
   {key:"quick-start",title:"快速开始",matchers:[1,2,3,4,6,7]},
   {key:"entry-points",title:"使用入口",matchers:[8,9,10,12,13,14,17]},
-  {key:"config-models",title:"配置与模型",matchers:[5,18,19,30,31,33]},
-  {key:"security",title:"权限与安全",matchers:[11,15,16,28]},
-  {key:"extensions",title:"扩展与自动化",matchers:[20,21,22,23,24,25,26,27,29]},
-  {key:"migration",title:"迁移与参考",matchers:[32,34,35,36,37,38]},
+  {key:"core-concepts",title:"核心概念",matchers:[5,18,19,30,31,33]},
+  {key:"advanced",title:"进阶功能",matchers:[20,21,22,23,24,25,26,27,29]},
+  {key:"best-practices",title:"最佳实践",matchers:[11,15,16,28]},
+  {key:"reference",title:"参考资料",matchers:[32,34,35,36,37,38]},
 ];
-const TOP_NAV_MENU_CONFIG=[
-  {
-    key:"快速开始",
-    localKeys:["overview"],
-    guideLinks:[
-      {key:"claudeGuide",label:"Claude Code 目录",icon:"⚡"},
-      {key:"codexGuide",label:"Codex 目录",icon:"🧭"},
-    ],
-    upstreamSources:[
-      {category:"claude-code",group:"quick-start",label:"Claude",icon:"⚡",limit:2},
-      {category:"codex",group:"quick-start",label:"Codex",icon:"🧭",limit:2},
-    ],
+const GUIDE_SYSTEMS={
+  claudeGuide:{
+    guideKey:"claudeGuide",
+    category:"claude-code",
+    label:"Claude Code",
+    icon:"⚡",
+    audience:"适合想先建立 Claude Code 整体认知、安装入口和常见工作流的人。",
+    description:"从上游文章里按主题整理出一条 Claude Code 学习路径，适合从认识、入口、概念到最佳实践逐步推进。",
+    count:CLAUDE_SECTION_COUNT,
   },
-  {
-    key:"使用入口",
-    localKeys:["where","install"],
-    upstreamSources:[
-      {category:"claude-code",group:"entry-points",label:"Claude",icon:"⚡",limit:2},
-      {category:"codex",group:"entry-points",label:"Codex",icon:"🧭",limit:2},
-    ],
+  codexGuide:{
+    guideKey:"codexGuide",
+    category:"codex",
+    label:"Codex",
+    icon:"🧭",
+    audience:"适合准备上手 Codex、理解配置权限、扩展能力和迁移参考的人。",
+    description:"保留原站视觉，只展示 Codex 对应的主题菜单、分组目录和正文阅读，不再混入 Claude 内容。",
+    count:CODEX_SECTION_COUNT,
   },
-  {
-    key:"核心概念",
-    localKeys:["howworks","commands","memory"],
-    upstreamSources:[
-      {category:"claude-code",group:"core-concepts",label:"Claude",icon:"⚡",limit:3},
-      {category:"codex",group:"config-models",label:"Codex",icon:"🧭",limit:2},
-    ],
-  },
-  {
-    key:"进阶功能",
-    localKeys:["think","plan","subagents","mcp","skills","hooks"],
-    upstreamSources:[
-      {category:"claude-code",group:"advanced",label:"Claude",icon:"⚡",limit:3},
-      {category:"codex",group:"extensions",label:"Codex",icon:"🧭",limit:2},
-    ],
-  },
-  {
-    key:"最佳实践",
-    localKeys:["prompts","workflows","practice"],
-    upstreamSources:[
-      {category:"claude-code",group:"best-practices",label:"Claude",icon:"⚡",limit:3},
-      {category:"codex",group:"quick-start",label:"Codex",icon:"🧭",limit:1,offset:2},
-    ],
-  },
-  {
-    key:"参考资料",
-    localKeys:["platforms","exercises"],
-    upstreamSources:[
-      {category:"claude-code",group:"reference",label:"Claude",icon:"⚡",limit:3},
-      {category:"codex",group:"security",label:"Codex",icon:"🧭",limit:2},
-      {category:"codex",group:"migration",label:"Codex",icon:"🧭",limit:1},
-    ],
-  },
-];
+};
 
 // ═══════════════════════════════════════════
 // SHARED COMPONENTS
@@ -230,10 +195,28 @@ function getArticleNumber(file){
 
 function prettifyTitle(input){
   return String(input||"")
+    .replace(/^\d+\s*[.、·:：-]\s*/,"")
     .replace(/^\d+\s+/,"")
     .replace(/[-_]+/g," ")
     .replace(/\s+/g," ")
     .trim();
+}
+
+function stripTitlePrefix(input){
+  return String(input||"")
+    .replace(/^#+\s*/,"")
+    .replace(/^\d+\s*[.、·:：-]\s*/,"")
+    .replace(/^\d+\s+/,"")
+    .trim();
+}
+
+function stripFirstMarkdownHeadingPrefix(markdown){
+  const lines=String(markdown||"").split("\n");
+  const firstHeadingIndex=lines.findIndex((line)=>/^#\s+/.test(line));
+  if(firstHeadingIndex>=0){
+    lines[firstHeadingIndex]=lines[firstHeadingIndex].replace(/^(#\s+)\d+\s*[.、·:：-]\s*/,"$1");
+  }
+  return lines.join("\n");
 }
 
 function resolveGuideGroupConfig(category,file){
@@ -252,7 +235,8 @@ const ARTICLE_LIBRARY=UPSTREAM_SECTIONS.map((section)=>{
   const file=normalizeContentPath(section.file);
   const markdown=ARTICLE_CONTENT_MAP[file]||"";
   const category=section.category;
-  const title=extractTitleFromMarkdown(markdown)||prettifyTitle(section.title)||prettifyTitle(file.split("/").pop()?.replace(/\.md$/,""));
+  const rawTitle=extractTitleFromMarkdown(markdown)||section.title||file.split("/").pop()?.replace(/\.md$/,"");
+  const title=stripTitlePrefix(prettifyTitle(rawTitle));
   const guideGroup=resolveGuideGroupConfig(category,file);
   return {...section,file,markdown,title,guideGroup:guideGroup.key,guideGroupTitle:guideGroup.title,number:getArticleNumber(file)};
 });
@@ -271,44 +255,108 @@ function getGuideArticles(category){
   })).filter((group)=>group.articles.length>0);
 }
 
-function getTopNavMenuConfig(menuKey){
-  return TOP_NAV_MENU_CONFIG.find((item)=>item.key===menuKey);
+function getTopNavArticles(guideKey,menuKey){
+  const system=GUIDE_SYSTEMS[guideKey];
+  if(!system)return [];
+  return ARTICLE_LIBRARY
+    .filter((article)=>article.category===system.category&&article.guideGroupTitle===menuKey)
+    .sort((a,b)=>a.number-b.number);
 }
 
-function getTopNavLocalItems(menuKey){
-  const config=getTopNavMenuConfig(menuKey);
-  if(!config)return [];
-  return config.localKeys.map((key)=>({key,...SITEMAP[key]})).filter((item)=>item.title);
+function getGuideMeta(guideKey){
+  return GUIDE_SYSTEMS[guideKey]||GUIDE_SYSTEMS.claudeGuide;
 }
 
-function getTopNavUpstreamItems(menuKey){
-  const config=getTopNavMenuConfig(menuKey);
-  if(!config)return [];
-  return (config.upstreamSources||[]).flatMap((source)=>{
-    const articles=ARTICLE_LIBRARY
-      .filter((article)=>article.category===source.category&&article.guideGroup===source.group)
-      .sort((a,b)=>a.number-b.number)
-      .slice(source.offset||0,(source.offset||0)+source.limit);
-    return articles.map((article)=>({
-      ...article,
-      sourceLabel:source.label,
-      sourceIcon:source.icon,
-      guideKey:source.category==="codex"?"codexGuide":"claudeGuide",
-    }));
-  });
+function getGuideKeyByCategory(category){
+  return category==="codex"?"codexGuide":"claudeGuide";
+}
+
+function getTopicPath(groupKey){
+  return TOP_GROUPS.find((title)=>title===groupKey)||groupKey;
+}
+
+function getGuideSwitches(activeGuideKey){
+  return Object.values(GUIDE_SYSTEMS).map((system)=>({
+    ...system,
+    active:system.guideKey===activeGuideKey,
+  }));
+}
+
+function getGuideTopicSummaries(category){
+  return getGuideArticles(category).map((group)=>({
+    ...group,
+    summary:`${group.articles.length} 篇文章，围绕${getTopicPath(group.title)}连续阅读。`,
+  }));
+}
+
+function getGuideHighlights(category){
+  return getGuideArticles(category).flatMap((group)=>group.articles.slice(0,2)).slice(0,6);
+}
+
+function resolveActiveGuideKey(page,articleState){
+  if(page==="articleView")return articleState.guide;
+  if(page==="claudeGuide"||page==="codexGuide")return page;
+  return null;
+}
+
+function getHomeCards(){
+  return Object.values(GUIDE_SYSTEMS);
+}
+
+function getGroupByTitle(category,title){
+  return getGuideArticles(category).find((group)=>group.title===title)||null;
 }
 
 function resolveTopNavGroupFromPage(page,articleState){
-  const localMatch=TOP_NAV_MENU_CONFIG.find((item)=>(item.localKeys||[]).includes(page));
-  if(localMatch)return localMatch.key;
-  if(page==="claudeGuide"||page==="codexGuide")return "快速开始";
+  const activeGuideKey=resolveActiveGuideKey(page,articleState);
+  if(!activeGuideKey)return null;
   if(page==="articleView"){
     const article=articleState.file?ARTICLE_BY_FILE[articleState.file]:null;
-    if(!article)return null;
-    const match=TOP_NAV_MENU_CONFIG.find((item)=>(item.upstreamSources||[]).some((source)=>source.category===article.category&&source.group===article.guideGroup));
-    return match?.key||null;
+    return article?.guideGroupTitle||null;
   }
-  return null;
+  return "快速开始";
+}
+
+function getDropdownHeading(guideKey,menuKey){
+  const system=getGuideMeta(guideKey);
+  return `${system.label} · ${menuKey}`;
+}
+
+function getMenuIntro(guideKey,menuKey){
+  const system=getGuideMeta(guideKey);
+  const group=getGroupByTitle(system.category,menuKey);
+  if(!group)return "";
+  return `只显示 ${system.label} 的 ${menuKey} 文章，共 ${group.articles.length} 篇。`;
+}
+
+function getHeroDescription(guideKey){
+  const system=getGuideMeta(guideKey);
+  return `${system.description} 你现在进入的是 ${system.label} 体系，只会看到这一套内容。`;
+}
+
+function getBackLabel(guideKey){
+  return `返回 ${getGuideMeta(guideKey).label} 学习路径`;
+}
+
+function getArticlePathLabel(guideKey){
+  return `${getGuideMeta(guideKey).label} 学习路径`;
+}
+
+function getArticleCountLabel(guideKey){
+  const system=getGuideMeta(guideKey);
+  return `${system.count} 篇同步文章`;
+}
+
+function getSystemButtonLabel(guideKey){
+  return `${getGuideMeta(guideKey).label}`;
+}
+
+function getHomeIntro(){
+  return "先选 Claude Code 或 Codex，再进入对应体系的学习路径和原文阅读页。首页不再承载手写学习页内容。";
+}
+
+function getGuideEntryButtonLabel(guideKey){
+  return `开始学习 ${getGuideMeta(guideKey).label}`;
 }
 
 function resolveAssetPath(currentFile,target){
@@ -354,51 +402,33 @@ function HomePage({goTo}){
         <span style={{color:C.text3,fontWeight:600}}>MIT 来源保留</span>
       </div>
       <h1 style={{fontSize:"clamp(38px,6vw,60px)",fontWeight:900,lineHeight:1.05,letterSpacing:0,margin:"0 auto 16px",color:C.text,textAlign:"center"}}>Claude Code & Codex 完全指南</h1>
-      <p style={{fontSize:18,color:C.text2,maxWidth:760,margin:"0 auto 28px",lineHeight:1.65}}>保留原来的手写学习站，同时把上游同步来的 Claude Code 和 Codex 文章接到顶部菜单与目录页里，方便你按主题阅读原文。</p>
+      <p style={{fontSize:18,color:C.text2,maxWidth:760,margin:"0 auto 28px",lineHeight:1.65}}>{getHomeIntro()}</p>
       <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}>
-        <button onClick={()=>goTo("claudeGuide")} style={{padding:"12px 28px",borderRadius:980,background:C.text,color:"#fff",border:"none",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:F}}>进入 Claude Code 文章目录</button>
-        <button onClick={()=>goTo("codexGuide")} style={{padding:"12px 28px",borderRadius:980,background:"transparent",color:C.blue,border:`1px solid ${C.blue}`,fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:F}}>进入 Codex 文章目录</button>
+        <button onClick={()=>goTo("claudeGuide")} style={{padding:"12px 28px",borderRadius:980,background:C.text,color:"#fff",border:"none",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:F}}>从 Claude Code 开始</button>
+        <button onClick={()=>goTo("codexGuide")} style={{padding:"12px 28px",borderRadius:980,background:"transparent",color:C.blue,border:`1px solid ${C.blue}`,fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:F}}>从 Codex 开始</button>
       </div>
     </div>
 
     <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:16,marginBottom:18}}>
-      {[
-        {icon:"⚡",title:"Claude Code 文章目录",count:CLAUDE_SECTION_COUNT,desc:"按快速开始、使用入口、核心概念、进阶功能、最佳实践、参考与排障分组查看上游文章。",action:"进入目录",to:"claudeGuide"},
-        {icon:"🧭",title:"Codex 文章目录",count:CODEX_SECTION_COUNT,desc:"按快速开始、使用入口、配置与模型、权限与安全、扩展与自动化、迁移与参考分组查看上游文章。",action:"进入目录",to:"codexGuide"},
-      ].map((card)=><Card key={card.title} style={{padding:26}}>
+      {getHomeCards().map((card)=><Card key={card.guideKey} style={{padding:26}}>
         <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:12,marginBottom:14}}>
           <div>
             <div style={{fontSize:28,marginBottom:10}}>{card.icon}</div>
-            <div style={{fontSize:20,fontWeight:800,color:C.text,lineHeight:1.2}}>{card.title}</div>
+            <div style={{fontSize:20,fontWeight:800,color:C.text,lineHeight:1.2}}>{card.label}</div>
           </div>
           <div style={{minWidth:74,padding:"8px 10px",borderRadius:12,background:C.bg3,textAlign:"center"}}>
             <div style={{fontSize:22,fontWeight:800,color:C.text}}>{card.count}</div>
             <div style={{fontSize:11,color:C.text3}}>同步文章</div>
           </div>
         </div>
-        <div style={{fontSize:14,color:C.text2,lineHeight:1.7,marginBottom:16}}>{card.desc}</div>
-        <div style={{fontSize:12,color:C.text3,lineHeight:1.6,marginBottom:16}}>内容来源：上游仓库自动同步，不在首页手工维护文章正文。</div>
-        <button onClick={()=>goTo(card.to)} style={{padding:"10px 16px",borderRadius:12,background:"transparent",border:`1px solid ${C.border}`,color:C.text,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:F}}>{card.action}</button>
+        <div style={{fontSize:14,color:C.text2,lineHeight:1.7,marginBottom:10}}>{card.audience}</div>
+        <div style={{fontSize:12,color:C.text3,lineHeight:1.6,marginBottom:16}}>{card.description}</div>
+        <button onClick={()=>goTo(card.guideKey)} style={{padding:"10px 16px",borderRadius:12,background:"transparent",border:`1px solid ${C.border}`,color:C.text,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:F}}>{getGuideEntryButtonLabel(card.guideKey)}</button>
       </Card>)}
     </div>
 
     <div style={{padding:18,borderRadius:16,background:C.bg3,marginBottom:40,fontSize:14,color:C.text2,lineHeight:1.7}}>
       上游仓库：<a href={upstreamManifest.upstreamRepo} target="_blank" rel="noreferrer" style={{color:C.blue,textDecoration:"none"}}>{repoLabel}</a> · 最新同步 commit：<code style={{fontFamily:M,background:"#fff",padding:"2px 6px",borderRadius:6}}>{shortCommit}</code> · 同步时间：{updatedAt}
-    </div>
-
-    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",gap:12,textAlign:"left"}}>
-      {[
-        {icon:"📖",title:"认识 Claude Code",desc:"了解它能做什么",to:"overview"},
-        {icon:"🖥️",title:"在哪里打开",desc:"5种方式逐个详解",to:"where"},
-        {icon:"📦",title:"安装配置",desc:"三步安装指南",to:"install"},
-        {icon:"⌨️",title:"命令在哪里用",desc:"彻底搞清楚",to:"commands"},
-        {icon:"🧠",title:"记忆系统",desc:"CLAUDE.md 怎么用",to:"memory"},
-        {icon:"💬",title:"怎么跟它说话",desc:"普通人也会的提示词",to:"prompts"},
-      ].map((c,i)=><Card key={i} onClick={()=>goTo(c.to)}>
-        <div style={{fontSize:24,marginBottom:8}}>{c.icon}</div>
-        <div style={{fontSize:15,fontWeight:700,color:C.text}}>{c.title}</div>
-        <div style={{fontSize:13,color:C.text2,marginTop:2}}>{c.desc}</div>
-      </Card>)}
     </div>
   </div>;
 }
@@ -975,25 +1005,56 @@ function ExercisesPage({goTo}){return <div>
 </div>}
 
 function GuideLandingPage({category,guideKey,goTo,openArticle}){
-  const groups=getGuideArticles(category);
+  const groups=getGuideTopicSummaries(category);
+  const highlights=getGuideHighlights(category);
   const total=groups.reduce((sum,group)=>sum+group.articles.length,0);
-  const label=guideKey==="claudeGuide"?"Claude Code":"Codex";
+  const system=getGuideMeta(guideKey);
 
   return <div>
-    <Breadcrumb items={[{label:"主题文章"},{label:GUIDE_PAGES[guideKey].title}]} goTo={goTo}/>
-    <SectionTitle sub={`保留原站视觉，只把上游同步来的 ${label} 文章按主题整理好，方便直接进入原文。`}>{GUIDE_PAGES[guideKey].title}</SectionTitle>
-    <Tip type="info">当前共收录 {total} 篇上游文章，正文直接读取 `content/upstream/` 的真实 Markdown 文件。</Tip>
+    <Breadcrumb items={[{label:"首页",link:"home"},{label:GUIDE_PAGES[guideKey].title}]} goTo={goTo}/>
+    <SectionTitle sub={getHeroDescription(guideKey)}>{GUIDE_PAGES[guideKey].title}</SectionTitle>
+    <Tip type="info">{system.audience} 当前共收录 {total} 篇上游文章，正文直接读取 `content/upstream/` 的真实 Markdown 文件。</Tip>
+    <Grid gap={16}>
+      <Card style={{padding:22}}>
+        <div style={{fontSize:12,fontWeight:700,color:C.text3,marginBottom:10}}>学习路径概览</div>
+        <div style={{fontSize:24,fontWeight:800,color:C.text,marginBottom:10}}>{getArticleCountLabel(guideKey)}</div>
+        <div style={{fontSize:14,color:C.text2,lineHeight:1.7}}>{system.description}</div>
+      </Card>
+      <Card style={{padding:22}}>
+        <div style={{fontSize:12,fontWeight:700,color:C.text3,marginBottom:10}}>主题菜单</div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+          {groups.map((group)=>(
+            <span key={group.key} style={{padding:"8px 12px",borderRadius:999,background:C.bg3,fontSize:13,fontWeight:600,color:C.text}}>
+              {group.title}
+            </span>
+          ))}
+        </div>
+      </Card>
+    </Grid>
+    <section style={{marginTop:28,marginBottom:28}}>
+      <SectionTitle sub="先从这几篇进入，会更快找到这套体系的主线。">推荐先读</SectionTitle>
+      <Grid>
+        {highlights.map((article)=>(
+          <Card key={`highlight-${article.file}`} onClick={()=>openArticle(article.file,guideKey)}>
+            <div style={{fontSize:12,fontWeight:700,color:C.text3,marginBottom:8}}>{article.guideGroupTitle}</div>
+            <div style={{fontSize:18,fontWeight:700,color:C.text,lineHeight:1.45,marginBottom:10}}>{article.title}</div>
+            <div style={{fontSize:13,color:C.text2,lineHeight:1.7,marginBottom:14}}>{article.file}</div>
+            <button onClick={(e)=>{e.stopPropagation();openArticle(article.file,guideKey)}} style={{padding:"8px 14px",borderRadius:10,background:"transparent",border:`1px solid ${C.border}`,color:C.text,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:F}}>进入全文</button>
+          </Card>
+        ))}
+      </Grid>
+    </section>
     <div style={{display:"grid",gap:20}}>
       {groups.map((group)=>(
         <section key={group.key}>
-          <SectionTitle sub={`${group.articles.length} 篇文章，按主题连续阅读。`}>{group.title}</SectionTitle>
+          <SectionTitle sub={group.summary}>{group.title}</SectionTitle>
           <Grid>
             {group.articles.map((article)=>(
               <Card key={article.file} onClick={()=>openArticle(article.file,guideKey)}>
-                <div style={{fontSize:12,fontWeight:700,color:C.text3,marginBottom:8}}>{article.number.toString().padStart(2,"0")}</div>
+                <div style={{fontSize:12,fontWeight:700,color:C.text3,marginBottom:8}}>{group.title}</div>
                 <div style={{fontSize:18,fontWeight:700,color:C.text,lineHeight:1.45,marginBottom:10}}>{article.title}</div>
                 <div style={{fontSize:13,color:C.text2,lineHeight:1.7,marginBottom:14}}>{article.file}</div>
-                <button onClick={(e)=>{e.stopPropagation();openArticle(article.file,guideKey)}} style={{padding:"8px 14px",borderRadius:10,background:"transparent",border:`1px solid ${C.border}`,color:C.text,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:F}}>阅读正文</button>
+                <button onClick={(e)=>{e.stopPropagation();openArticle(article.file,guideKey)}} style={{padding:"8px 14px",borderRadius:10,background:"transparent",border:`1px solid ${C.border}`,color:C.text,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:F}}>进入全文</button>
               </Card>
             ))}
           </Grid>
@@ -1006,18 +1067,18 @@ function GuideLandingPage({category,guideKey,goTo,openArticle}){
 function ArticleViewPage({article,guideKey,goTo,openArticle}){
   const guidePage=guideKey||"claudeGuide";
   const category=guidePage==="codexGuide"?"codex":"claude-code";
-  const guideLabel=GUIDE_PAGES[guidePage]?.title||"文章目录";
+  const guideLabel=getArticlePathLabel(guidePage);
   const orderedArticles=getGuideArticles(category).flatMap((group)=>group.articles);
   const currentIndex=orderedArticles.findIndex((item)=>item.file===article.file);
   const prevArticle=currentIndex>0?orderedArticles[currentIndex-1]:null;
   const nextArticle=currentIndex>=0&&currentIndex<orderedArticles.length-1?orderedArticles[currentIndex+1]:null;
 
   return <div>
-    <Breadcrumb items={[{label:"主题文章"},{label:guideLabel,link:guidePage},{label:article.title}]} goTo={goTo}/>
+    <Breadcrumb items={[{label:"首页",link:"home"},{label:guideLabel,link:guidePage},{label:article.title}]} goTo={goTo}/>
     <div style={{marginBottom:24}}>
-      <SectionTitle sub={`原文来自上游同步 Markdown，当前目录：${article.guideGroupTitle}`}>{article.title}</SectionTitle>
+      <SectionTitle sub={`你正在阅读 ${getGuideMeta(guidePage).label} 的「${article.guideGroupTitle}」主题原文。`}>{article.title}</SectionTitle>
       <div style={{display:"flex",flexWrap:"wrap",gap:10,marginTop:14}}>
-        <button onClick={()=>goTo(guidePage)} style={{padding:"8px 14px",borderRadius:10,background:"transparent",border:`1px solid ${C.border}`,color:C.text,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:F}}>返回目录</button>
+        <button onClick={()=>goTo(guidePage)} style={{padding:"8px 14px",borderRadius:10,background:"transparent",border:`1px solid ${C.border}`,color:C.text,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:F}}>{getBackLabel(guidePage)}</button>
         {prevArticle&&<button onClick={()=>openArticle(prevArticle.file,guidePage)} style={{padding:"8px 14px",borderRadius:10,background:"transparent",border:`1px solid ${C.border}`,color:C.text,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:F}}>上一篇</button>}
         {nextArticle&&<button onClick={()=>openArticle(nextArticle.file,guidePage)} style={{padding:"8px 14px",borderRadius:10,background:C.text,border:"none",color:"#fff",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:F}}>下一篇</button>}
       </div>
@@ -1032,10 +1093,13 @@ function ArticleViewPage({article,guideKey,goTo,openArticle}){
 
     <article className="content-area" style={{background:"#fff",border:`1px solid ${C.borderLight}`,borderRadius:18,padding:"28px 30px",boxShadow:"0 1px 2px rgba(0,0,0,.03)"}}>
       <MarkdownRenderer
-        markdown={article.markdown}
+        markdown={stripFirstMarkdownHeadingPrefix(article.markdown)}
         resolveAsset={(target)=>resolveAssetPath(article.file,target)}
         resolveLink={(target)=>resolveMarkdownLink(article.file,target)}
-        onOpenArticle={(file)=>openArticle(file,guidePage)}
+        onOpenArticle={(file)=>{
+          const linkedArticle=ARTICLE_BY_FILE[normalizeContentPath(file)];
+          openArticle(file,linkedArticle?getGuideKeyByCategory(linkedArticle.category):guidePage);
+        }}
       />
     </article>
   </div>;
@@ -1061,7 +1125,7 @@ export default function App(){
     const normalizedFile=normalizeContentPath(file);
     const article=ARTICLE_BY_FILE[normalizedFile];
     if(!article)return;
-    const nextGuide=guide||(article.category==="codex"?"codexGuide":"claudeGuide");
+    const nextGuide=guide||getGuideKeyByCategory(article.category);
     setHistory((prev)=>[...prev.slice(-10),page]);
     setArticleState({file:normalizedFile,guide:nextGuide});
     setPage("articleView");
@@ -1089,48 +1153,36 @@ export default function App(){
       :page==="codexGuide"
         ?()=> <GuideLandingPage category="codex" guideKey="codexGuide" goTo={goTo} openArticle={openArticle}/>
         :PAGES[page];
-  const activeUpstream=page==="claudeGuide"||page==="codexGuide"||page==="articleView";
-  const activeGuideKey=page==="articleView"?articleState.guide:page;
+  const activeGuideKey=resolveActiveGuideKey(page,articleState);
   const showLinearNav=page!=="home"&&page!=="claudeGuide"&&page!=="codexGuide"&&page!=="articleView";
   const layoutWidth=1120;
   const navButtonStyle={padding:"8px 14px",fontSize:14,fontWeight:400,color:C.text2,background:"none",border:"none",cursor:"pointer",fontFamily:F,borderRadius:8,transition:".15s"};
   const activeTopGroup=resolveTopNavGroupFromPage(page,articleState);
   const renderMenuSectionTitle=(label,compact=false)=><div style={{fontSize:10,fontWeight:700,color:C.text3,letterSpacing:1.2,padding:compact?"10px 0 4px":"8px 0 4px",textTransform:"uppercase"}}>{label}</div>;
-  const renderLocalLink=(item,isMobile=false)=><a key={item.key} href="#" onClick={e=>{e.preventDefault();goTo(item.key)}} style={{display:"flex",alignItems:"center",gap:10,padding:isMobile?"8px 0":"9px 12px",borderRadius:isMobile?0:10,textDecoration:"none",color:item.key===page?C.accent:C.text,background:!isMobile&&item.key===page?`${C.accent}08`:"transparent",fontSize:14,fontWeight:item.key===page?600:400,transition:".15s"}}>
-    <span style={{fontSize:17}}>{item.icon}</span><span>{item.title}</span>
-  </a>;
-  const renderGuideLink=(item,isMobile=false)=><a key={item.key} href="#" onClick={e=>{e.preventDefault();goTo(item.key)}} style={{display:"flex",alignItems:"center",gap:10,padding:isMobile?"8px 0":"9px 12px",borderRadius:isMobile?0:10,textDecoration:"none",color:activeGuideKey===item.key?C.accent:C.text,background:!isMobile&&activeGuideKey===item.key?`${C.accent}08`:"transparent",fontSize:14,fontWeight:activeGuideKey===item.key?600:400,transition:".15s"}}>
-    <span style={{fontSize:17}}>{item.icon}</span><span>{item.label}</span>
-  </a>;
-  const renderUpstreamLink=(item,isMobile=false)=><a key={`${item.file}-${item.sourceLabel}`} href="#" onClick={e=>{e.preventDefault();openArticle(item.file,item.guideKey)}} style={{display:"block",padding:isMobile?"8px 0":"9px 12px",borderRadius:isMobile?0:10,textDecoration:"none",color:page==="articleView"&&articleState.file===item.file?C.accent:C.text,background:!isMobile&&page==="articleView"&&articleState.file===item.file?`${C.accent}08`:"transparent",transition:".15s"}}>
+  const renderGuideLink=(item,isMobile=false)=><a key={item.file} href="#" onClick={e=>{e.preventDefault();openArticle(item.file,activeGuideKey)}} style={{display:"block",padding:isMobile?"8px 0":"9px 12px",borderRadius:isMobile?0:10,textDecoration:"none",color:page==="articleView"&&articleState.file===item.file?C.accent:C.text,background:!isMobile&&page==="articleView"&&articleState.file===item.file?`${C.accent}08`:"transparent",transition:".15s"}}>
     <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:2}}>
-      <span style={{fontSize:11,color:C.text3,fontWeight:700}}>{item.sourceIcon} {item.sourceLabel}</span>
-      <span style={{fontSize:11,color:C.text3}}>{String(item.number).padStart(2,"0")}</span>
+      <span style={{fontSize:11,color:C.text3,fontWeight:700}}>{item.guideGroupTitle}</span>
     </div>
     <div style={{fontSize:13.5,fontWeight:page==="articleView"&&articleState.file===item.file?600:400,lineHeight:1.45}}>{item.title}</div>
   </a>;
   const renderTopNavDropdown=(menuKey,isMobile=false)=>{
-    const config=getTopNavMenuConfig(menuKey);
-    const localItems=getTopNavLocalItems(menuKey);
-    const upstreamItems=getTopNavUpstreamItems(menuKey);
-    if(!config)return null;
+    if(!activeGuideKey)return null;
+    const items=getTopNavArticles(activeGuideKey,menuKey);
     return <div style={isMobile?{}:{background:"#fff",borderRadius:14,boxShadow:"0 8px 32px rgba(0,0,0,.12)",border:`1px solid ${C.borderLight}`,padding:10,minWidth:360,maxWidth:420}}>
-      {!!config.guideLinks?.length&&<>
-        {renderMenuSectionTitle("站内导读",isMobile)}
-        {config.guideLinks.map((item)=>renderGuideLink(item,isMobile))}
-      </>}
-      {!!localItems.length&&<>
-        {renderMenuSectionTitle("本地学习页",isMobile)}
-        {localItems.map((item)=>renderLocalLink(item,isMobile))}
-      </>}
-      {!!upstreamItems.length&&<>
-        {renderMenuSectionTitle("上游文章",isMobile)}
-        {upstreamItems.map((item)=>renderUpstreamLink(item,isMobile))}
-      </>}
-      <div style={{display:"flex",gap:isMobile?14:8,flexWrap:"wrap",padding:isMobile?"10px 0 0":"8px 12px 4px"}}>
-        <a href="#" onClick={e=>{e.preventDefault();goTo("claudeGuide")}} style={{fontSize:12.5,color:activeGuideKey==="claudeGuide"&&activeUpstream?C.accent:C.blue,textDecoration:"none",fontWeight:600}}>查看 Claude 全部文章</a>
-        <a href="#" onClick={e=>{e.preventDefault();goTo("codexGuide")}} style={{fontSize:12.5,color:activeGuideKey==="codexGuide"&&activeUpstream?C.accent:C.blue,textDecoration:"none",fontWeight:600}}>查看 Codex 全部文章</a>
-      </div>
+      <>
+        {renderMenuSectionTitle(getDropdownHeading(activeGuideKey,menuKey),isMobile)}
+        <div style={{padding:isMobile?"4px 0 8px":"4px 12px 10px",fontSize:12.5,color:C.text3,lineHeight:1.6}}>
+          {getMenuIntro(activeGuideKey,menuKey)}
+        </div>
+        {items.map((item)=>renderGuideLink(item,isMobile))}
+      </>
+      {!!activeGuideKey&&(
+        <div style={{display:"flex",gap:isMobile?14:8,flexWrap:"wrap",padding:isMobile?"10px 0 0":"8px 12px 4px"}}>
+          <a href="#" onClick={e=>{e.preventDefault();goTo(activeGuideKey)}} style={{fontSize:12.5,color:C.blue,textDecoration:"none",fontWeight:600}}>
+            查看 {getGuideMeta(activeGuideKey).label} 全部文章
+          </a>
+        </div>
+      )}
     </div>;
   };
 
@@ -1146,7 +1198,7 @@ export default function App(){
         </a>
         {/* Desktop nav */}
         <div style={{display:"flex",gap:2,position:"relative",alignItems:"center"}}>
-          {TOP_GROUPS.map(g=>{
+          {activeGuideKey&&TOP_GROUPS.map(g=>{
             const isActive=activeTopGroup===g;
             const isOpen=dropdown===g;
             return <div key={g} style={{position:"relative"}} onMouseEnter={()=>setDropdown(g)} onMouseLeave={()=>setDropdown(null)}>
@@ -1156,6 +1208,27 @@ export default function App(){
               </div>}
             </div>;
           })}
+          <div style={{display:"flex",alignItems:"center",gap:8,marginLeft:activeGuideKey?8:0}}>
+            {getGuideSwitches(activeGuideKey).map((system)=>(
+              <button
+                key={system.guideKey}
+                onClick={()=>goTo(system.guideKey)}
+                style={{
+                  padding:"8px 12px",
+                  borderRadius:999,
+                  border:`1px solid ${system.active?`${C.accent}55`:C.borderLight}`,
+                  background:system.active?"#fff4ec":"#fff",
+                  color:system.active?C.accent:C.text2,
+                  fontSize:13,
+                  fontWeight:600,
+                  cursor:"pointer",
+                  fontFamily:F,
+                }}
+              >
+                {getSystemButtonLabel(system.guideKey)}
+              </button>
+            ))}
+          </div>
         </div>
         <button onClick={()=>setMenuOpen(!menuOpen)} style={{display:"none",background:"none",border:"none",fontSize:20,cursor:"pointer",color:C.text,padding:4}} className="mob-btn">☰</button>
       </div>
@@ -1164,7 +1237,29 @@ export default function App(){
     {/* Mobile menu */}
     {menuOpen&&<div style={{position:"fixed",inset:0,zIndex:150,background:"rgba(0,0,0,.3)"}} onClick={()=>setMenuOpen(false)}/>}
     {menuOpen&&<div style={{position:"fixed",top:44,right:0,width:280,bottom:0,background:"#fff",zIndex:200,overflowY:"auto",padding:16,borderLeft:`1px solid ${C.borderLight}`}}>
-      {TOP_GROUPS.map(g=><div key={g}>
+      <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:12}}>
+        {getGuideSwitches(activeGuideKey).map((system)=>(
+          <button
+            key={system.guideKey}
+            onClick={()=>goTo(system.guideKey)}
+            style={{
+              padding:"10px 12px",
+              borderRadius:12,
+              border:`1px solid ${system.active?`${C.accent}55`:C.borderLight}`,
+              background:system.active?"#fff4ec":"#fff",
+              color:system.active?C.accent:C.text,
+              fontSize:14,
+              fontWeight:600,
+              cursor:"pointer",
+              fontFamily:F,
+              textAlign:"left",
+            }}
+          >
+            {getSystemButtonLabel(system.guideKey)}
+          </button>
+        ))}
+      </div>
+      {activeGuideKey&&TOP_GROUPS.map(g=><div key={g}>
         <div style={{fontSize:10,fontWeight:700,color:C.text3,letterSpacing:1.5,padding:"12px 0 4px",textTransform:"uppercase"}}>{g}</div>
         {renderTopNavDropdown(g,true)}
       </div>)}
