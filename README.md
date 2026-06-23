@@ -1,12 +1,12 @@
 # Claude Code & Codex 完全指南
 
-这是一个面向中文读者的双入口指南站点：首页保留 Claude Code 的学习路径，同时新增 Codex 入口说明，并把核心内容来源切到上游仓库自动同步。
+这是一个面向中文读者的双入口指南站点。现在首页、分类目录和文章阅读页都会直接读取 `content/upstream/` 里的同步 Markdown 正文，不再只是展示同步文件或停留在本地手写说明；前端会按主题学习路径重新组织上游资料。
 
 ## 定位
 
 - 面向想快速理解 Claude Code 与 Codex 差异、入口和资料来源的读者
-- 站点首页展示双入口卡片，明确说明内容来自上游自动同步
-- 上游原始内容同步到 `content/upstream/`，前端只负责展示定位和同步信息
+- 站点首页展示双入口卡片，并直接进入真实 Claude Code / Codex 文章目录
+- 上游原始内容同步到 `content/upstream/`，前端会读取这些 Markdown 原文并渲染成可读正文
 
 ## 同步方式
 
@@ -14,6 +14,13 @@
 2. 脚本会从上游仓库拉取 `README.md`、`README.en.md`、`LICENSE`、`claude-code/*.md`、`codex/*.md`
 3. 所有文件会写入 `content/upstream/`
 4. 同时生成 `content/upstream/manifest.json`，记录同步时间、上游仓库、上游 commit 和文章列表
+
+## 前端如何读取正文
+
+- `src/App.jsx` 会根据 `content/upstream/manifest.json` 构建 Claude Code / Codex 两个目录
+- 文章正文通过 Vite 的 raw markdown 读取方式直接加载 `content/upstream/**/*.md`
+- `src/markdown.js` 内置了一个无额外依赖的最小 Markdown 渲染器，支持标题、段落、列表、引用、代码块、行内 code、链接、图片和粗体
+- 图片会优先映射到 `content/upstream/` 里的同步资源，避免正文里只剩断裂文本
 
 ## 自动同步
 
