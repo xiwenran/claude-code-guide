@@ -144,6 +144,8 @@ codex -s read-only -a on-request "只帮我审一下这段代码，别动手"
 
 弹出选择器，挑你要的档（`Read Only` / `Auto` / `Full Access` 这类），即时生效。我自己的真实节奏是：**接手陌生项目先 `/permissions` 切只读**让它通读出方案，看完心里有底了再切 `workspace-write` 放手——这个习惯救过我好几次，避免它一上来就瞎改我还没看懂的代码。
 
+> ⚠️ **新版菜单可能不同**：codex-cli **0.142** 起，官方推出 [permission profiles](https://developers.openai.com/codex/permissions)（**Beta，may change**）替代旧预设，你的 `/permissions` 可能变成 `Ask for approval` / `Approval for me` / `Full access` 这类**审批策略**档，不再直接出现 `Read Only`。要切只读时**改走启动参数 `codex --sandbox read-only`**，或在 `~/.codex/config.toml` 写 `sandbox_mode = "read-only"`（官方保留旧 sandbox 模式作兼容路径）。本节后续讲 `/permissions` 切只读的地方同此说明，不再重复。
+
 下面这张图把「先看沙箱、再看审批」的两道关卡理清楚：
 
 ![沙箱与审批的两层决策三种终态：圈内直接做 / 出圈看策略 / on-request 还要问你](assets/02-approval-flow@2x.png)
