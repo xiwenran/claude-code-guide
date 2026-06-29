@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-06-27T06:36:38.690Z",
+  "updatedAt": "2026-06-29T08:25:37.334Z",
   "upstreamRepo": "https://github.com/stormzhang/ai-coding-guide",
-  "upstreamCommit": "673e58bc24b162aaa5514e2fa1e3b7c1609d6369",
+  "upstreamCommit": "c88ca0ee302c06980f87a116ecd7f57aca792c36",
   "sections": [
     {
       "category": "claude-code",
