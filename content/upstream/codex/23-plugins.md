@@ -285,7 +285,9 @@ my-first-plugin/
 
 你可能注意到，这套目录结构跟第 22 篇讲的 skill 目录、前面讲的 MCP `.mcp.json` 几乎一模一样。**这不是巧合**——插件本质就是「把你散落各处的那些配置，按同样的格式收进一个独立文件夹」。所以官方才说「还在一个仓库里迭代就先用本地 skill，要共享了再打成插件」，因为格式是相通的，搬过去就行。
 
-> 💡 一句话总结：插件 = `.codex-plugin/plugin.json`（身份证，`name` 用 kebab-case 定命名空间）+ 根目录下的各组件文件夹；**记死那条铁律——`.codex-plugin/` 里只放 `plugin.json`，skills / hooks / `.mcp.json` / `.app.json` 全摆根目录**；起步用 `@plugin-creator` 搭脚手架最快。
+> 🔮 **后续会有一篇进阶教程**——这一节只带你「看得懂插件包长什么样」，但要把自己写的 skill / MCP **真正打成一个能发布、能装、能分享的插件**，还需要单独走一遍：插件目录初始化、`plugin.json` 字段精讲、把 skill 打包进去、声明 MCP / app 依赖、`@plugin-creator` 搭脚手架的细节、本地安装测试、版本号与发布流程、私有市场或团队分发、装完后的验证与排错。这套「从零造一个发布级 Codex 插件」的实战流程，我会**单开一篇**讲透（暂未排期，跟着 ROADMAP 走）。这一节你只要心里有数：**目录长啥样会看了，下一步就是会自己打一个**。
+
+> 💡 一句话总结：插件 = `.codex-plugin/plugin.json`（身份证，`name` 用 kebab-case 定命名空间）+ 根目录下的各组件文件夹；**记死那条铁律——`.codex-plugin/` 里只放 `plugin.json`，skills / hooks / `.mcp.json` / `.app.json` 全摆根目录**；起步用 `@plugin-creator` 搭脚手架最快；**「从零造发布级插件」单开一篇讲**。
 
 ---
 
